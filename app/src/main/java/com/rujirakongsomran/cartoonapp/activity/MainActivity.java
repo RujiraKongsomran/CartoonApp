@@ -1,8 +1,10 @@
-package com.rujirakongsomran.cartoonapp;
+package com.rujirakongsomran.cartoonapp.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.rujirakongsomran.cartoonapp.R;
 
 public class MainActivity extends AppCompatActivity {
 
