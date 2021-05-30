@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void InitInstances() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://gist.githubusercontent.com/")
+                .baseUrl("https://raw.githubusercontent.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
