@@ -5,12 +5,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.rujirakongsomran.cartoonapp.JsonPlaceHolderApi;
 import com.rujirakongsomran.cartoonapp.adapter.RecyclerViewAdapter;
 import com.rujirakongsomran.cartoonapp.databinding.ActivityMainBinding;
 import com.rujirakongsomran.cartoonapp.model.Anime;
@@ -21,6 +23,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,7 +48,34 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        jsonRequest();
+        //jsonRequest();
+        InitInstances();
+    }
+
+    private void InitInstances() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://gist.githubusercontent.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
+        Call<List<Anime>> call = jsonPlaceHolderApi.getListAnime();
+        call.enqueue(new Callback<List<Anime>>() {
+            @Override
+            public void onResponse(Call<List<Anime>> call, retrofit2.Response<List<Anime>> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(MainActivity.this, "Code: " + response.code(), Toast.LENGTH_SHORT).show();
+                } else {
+                    lstData = response.body();
+                    setupRecyclerView(lstData);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Anime>> call, Throwable t) {
+                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void jsonRequest() {
