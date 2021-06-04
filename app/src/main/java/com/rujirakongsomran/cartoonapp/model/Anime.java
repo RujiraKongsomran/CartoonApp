@@ -3,6 +3,7 @@ package com.rujirakongsomran.cartoonapp.model;
 import com.google.gson.annotations.SerializedName;
 
 public class Anime {
+    public boolean get;
     private String name;
     private String description;
     @SerializedName("Rating")
